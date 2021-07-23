@@ -242,7 +242,9 @@ public class WalletCore {
 
         if (useBip44) {
             // compatible imtoken
-            options.add(Wallet.withFlag(Wallet.FlagBBCUseStandardBip44ID));
+            // options.add(Wallet.withFlag(Wallet.FlagBBCUseStandardBip44ID));
+
+            options.add(Wallet.withFlag(Wallet.FlagBBBUseStandardBip44ID));
         }
 
         Wallet_ wallet = null;

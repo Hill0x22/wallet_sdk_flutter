@@ -117,13 +117,13 @@ public class WalletBBC {
         try {
             List<Map<String, Object>> utxos = call.argument("utxos");
             String address = call.argument("address");
-            long timestamp = Long.valueOf(String.valueOf(call.argument("timestamp")));
+            long timestamp = Long.valueOf(String.valueOf((int)call.argument("timestamp")));
             String anchor = call.argument("anchor");
             double amount = call.argument("amount");
             double fee = call.argument("fee");
             int version = call.argument("version");
             int lockUntil = call.argument("lockUntil");
-            long type = Long.valueOf(String.valueOf(call.argument("type")));
+            long type = Long.valueOf(String.valueOf((int)call.argument("type")));
             String templateData = call.argument("templateData");
 
 

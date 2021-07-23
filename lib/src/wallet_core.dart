@@ -6,10 +6,8 @@ import 'wallet_btc.dart';
 import 'wallet_eth.dart';
 
 class WalletSdkChains {
-  static final all = [btc, eth, bbc, trx, usdtOmni];
-  static const btc = 'BTC';
-  static const eth = 'ETH';
-  static const bbc = 'BBC';
+  static final all = [bbb, trx, usdtOmni];
+  static const bbb = 'BBB';
   static const trx = 'TRX';
   static const usdtOmni = 'USDT(Omni)';
 }
