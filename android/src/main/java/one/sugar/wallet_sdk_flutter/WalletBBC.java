@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bbc.TemplateInfo;
-import bbc.TxBuilder;
+import ibr.TemplateInfo;
+import ibr.TxBuilder;
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.Result;
-import bbc.Bbc;
-import bbc.KeyInfo;
+import ibr.Ibr;
+import ibr.KeyInfo;
 
 public class WalletBBC {
     static String[] allFunc = new String[]{
@@ -56,7 +57,7 @@ public class WalletBBC {
             final String bip44Path = call.argument("bip44Path");
             final String bip44Key = call.argument("bip44Key");
 
-            final bip44.Deriver de = Bbc.newSymbolBip44Deriver(
+            final bip44.Deriver de = Ibr.newSymbolBip44Deriver(
                     null, //symbol
                     bip44Path, //bip44Path
                     bip44Key, //bip44Key
@@ -81,7 +82,7 @@ public class WalletBBC {
         try {
             final String privateKey = call.argument("privateKey");
 
-            final KeyInfo info = Bbc.parsePrivateKey(privateKey);
+            final KeyInfo info = Ibr.parsePrivateKey(privateKey);
 
             final HashMap<String, String> map = new HashMap<String, String>();
             map.put("address", info.getAddress());
@@ -101,7 +102,7 @@ public class WalletBBC {
     static private void addressBBCToPublicKey(MethodCall call, Result result) {
         try {
             final String address = call.argument("address");
-            final String pubKey = Bbc.address2pubk(address);
+            final String pubKey = Ibr.address2pubk(address);
             result.success(pubKey);
         } catch (Exception e) {
             result.error("AddressBBCToPublicKeyError", e.getMessage(), null);
@@ -127,7 +128,7 @@ public class WalletBBC {
             String templateData = call.argument("templateData");
 
 
-            TxBuilder txBuilder = Bbc.newTxBuilder();
+            TxBuilder txBuilder = Ibr.newTxBuilder();
             txBuilder
                     .setAnchor(anchor)
                     .setTimestamp(timestamp)
@@ -147,10 +148,12 @@ public class WalletBBC {
             if (call.hasArgument("dataType")) {
                 dataType = call.argument("dataType");
             }
-
+            Log.d("isme","█████"+data);
+            Log.d("isme","█████ dataType:"+dataType);
             if(data != null){
                 switch (dataType) {
                     case 0: // setData String
+
                         txBuilder.setData(dataWithFmt, data.getBytes());
                         break;
                     case 1: //  setRawData hex
@@ -200,7 +203,7 @@ public class WalletBBC {
 
             TemplateInfo info;
             try {
-                info = Bbc.createTemplateDataDexOrder(
+                info = Ibr.createTemplateDataDexOrder(
                         sellerAddress,
                         tradePair,
                         price,
@@ -234,7 +237,7 @@ public class WalletBBC {
     static private void validateBBCAddress(MethodCall call, Result result) {
         try {
             String address = call.argument("address");
-            Bbc.address2pubk(address);
+            Ibr.address2pubk(address);
             result.success(true);
         } catch (Exception e) {
             result.error("AddressError", e.getMessage(), null);

@@ -2,6 +2,7 @@ package one.sugar.wallet_sdk_flutter;
 
 import java.util.HashMap;
 import crypto.Crypto;
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.Result;
 import wallet.Wallet;
@@ -199,6 +200,8 @@ public class WalletCore {
                 result.error("MnemonicError", "Mnemonic is invalid", null);
                 return;
             }
+            Log.d("isme","signTx-rawTx:"+rawTx);
+            Log.d("isme","signTx-symbol:"+symbol);
             String signTx = wallet.sign(symbol, rawTx);
             result.success(signTx);
         } catch (Exception e) {
@@ -244,7 +247,7 @@ public class WalletCore {
             // compatible imtoken
             // options.add(Wallet.withFlag(Wallet.FlagBBCUseStandardBip44ID));
 
-            options.add(Wallet.withFlag(Wallet.FlagBBBUseStandardBip44ID));
+            options.add(Wallet.withFlag(Wallet.FlagIBRUseStandardBip44ID));
         }
 
         Wallet_ wallet = null;
