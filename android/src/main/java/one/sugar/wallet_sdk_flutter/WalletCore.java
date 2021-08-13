@@ -1,6 +1,7 @@
 package one.sugar.wallet_sdk_flutter;
 
 import java.util.HashMap;
+
 import crypto.Crypto;
 import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
@@ -50,6 +51,7 @@ public class WalletCore {
 
     /**
      * generate mnemonic
+     *
      * @param result mnemonic
      */
     static private void generateMnemonic(Result result) {
@@ -63,7 +65,8 @@ public class WalletCore {
 
     /**
      * validate mnemonic
-     * @param call mnemonic
+     *
+     * @param call   mnemonic
      * @param result bool
      */
     static private void validateMnemonic(MethodCall call, Result result) {
@@ -78,7 +81,8 @@ public class WalletCore {
 
     /**
      * import mnemonic
-     * @param call params
+     *
+     * @param call   params
      * @param result key pair list
      */
     static private void importMnemonic(MethodCall call, Result result) {
@@ -117,7 +121,7 @@ public class WalletCore {
     /**
      * export symbol private key by mnemonic
      *
-     * @param call mnemonic params
+     * @param call   mnemonic params
      * @param result private key
      */
     static private void exportPrivateKey(MethodCall call, Result result) {
@@ -134,7 +138,7 @@ public class WalletCore {
     /**
      * sing msg with private key
      *
-     * @param call private key ,msg
+     * @param call   private key ,msg
      * @param result sing msg
      */
     static private void signMsgWithPKAndBlake(MethodCall call, Result result) {
@@ -145,7 +149,7 @@ public class WalletCore {
             final byte[] blake2bByte = Crypto.blake2b256(msg.getBytes());
 
             final byte[] privateKeyByte = Crypto.hexDecodeThenReverse(privateKey);
-            byte[] parentSign = Crypto.ed25519sign(privateKeyByte,blake2bByte);
+            byte[] parentSign = Crypto.ed25519sign(privateKeyByte, blake2bByte);
             result.success(WalletUtils.bytesToHexString(parentSign));
         } catch (Exception e) {
             result.error("SignMsgError", e.getMessage(), null);
@@ -155,7 +159,7 @@ public class WalletCore {
     /**
      * sing msg by mnemonic
      *
-     * @param call mnemonic params
+     * @param call   mnemonic params
      * @param result msg sing hex data
      */
     static private void signMsg(MethodCall call, Result result) {
@@ -170,12 +174,13 @@ public class WalletCore {
                 return;
             }
             Wallet_ wallet = getWalletByCall(call);
+            String msgHex = wallet.signTextMsg(symbol, msg);
 
-            // msg 签名
-            String privateKey = wallet.derivePrivateKey(symbol);
-            byte[] privateKeyByte = Crypto.hexDecodeThenReverse(privateKey);
-            byte[] sign = Crypto.ed25519sign(privateKeyByte, msg.getBytes());
-            String msgHex = WalletUtils.bytesToHexString(sign);
+//             msg 签名
+//            String privateKey = wallet.derivePrivateKey(symbol);
+//            byte[] privateKeyByte = Crypto.hexDecodeThenReverse(privateKey);
+//            byte[] sign = Crypto.ed25519sign(privateKeyByte, msg.getBytes());
+//            String msgHex = WalletUtils.bytesToHexString(sign);
             result.success(msgHex);
         } catch (Exception e) {
             e.printStackTrace();
@@ -185,6 +190,7 @@ public class WalletCore {
 
     /**
      * sing tx
+     *
      * @param call
      * @param result
      */
@@ -200,8 +206,8 @@ public class WalletCore {
                 result.error("MnemonicError", "Mnemonic is invalid", null);
                 return;
             }
-            Log.d("isme","signTx-rawTx:"+rawTx);
-            Log.d("isme","signTx-symbol:"+symbol);
+            Log.d("isme", "signTx-rawTx:" + rawTx);
+            Log.d("isme", "signTx-symbol:" + symbol);
             String signTx = wallet.sign(symbol, rawTx);
             result.success(signTx);
         } catch (Exception e) {
@@ -212,6 +218,7 @@ public class WalletCore {
 
     /**
      * create wallet instance
+     *
      * @param call
      * @return
      * @throws Exception
